@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const mongoose = require('mongoose')
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const path = require("path");
@@ -10,6 +10,10 @@ const UserModel = require("./models/user");
 
 const app = express();
 const port = process.env.PORT;
+
+
+
+mongoose.connect(process.env.DBPASS);
 
 
 // Set the view engine to EJS
@@ -50,7 +54,7 @@ app.post("/create", (req, res) => {
           age,
         });
 
-        const token = jwt.sign({ email }, "shhhhh");
+        const token = jwt.sign({ email }, process.env.SECRET);
         res.cookie("token", token);
 
         res.status(201).send(createdUser);
@@ -93,5 +97,5 @@ app.get("/logout", (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port http://localhost:${port}`);
 });
